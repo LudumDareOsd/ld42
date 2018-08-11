@@ -22,7 +22,7 @@ class FloorMap {
     createTiles() {
         for (let x = 0; x < 18; x++) {
             for (let y = 0; y < 10; y++) {
-                let tile = this.scene.add.tileSprite(48 + (x * 32), 48 + (y * 32), 16, 16, 'floor').setScale(2);
+                let tile = this.scene.add.tileSprite(48 + (x * 32), 48 + (y * 32), 16, 16, 'floor').setScale(2).setDepth(2);
                 this.tiles.push(tile);
             }
         }
@@ -31,11 +31,13 @@ class FloorMap {
     dropTile() {
         let index = Math.floor(Math.random() * this.tilesLeft);
         let tile = this.tiles[index];
-        let droptile = this.scene.add.sprite(tile.x, tile.y, 'floordrop1').setScale(2);
-        droptile.on('animationcomplete', this.removeTile, { scope: this, index: index, droptile: droptile });
+        let droptile = this.scene.add.sprite(tile.x, tile.y, 'floordrop1').setScale(2).setDepth(3);
+        droptile.on('animationcomplete', this.removeTile, {
+            scope: this,
+            index: index,
+            droptile: droptile
+        });
         droptile.play('droptile');
-
-
     }
 
     removeTile() {
@@ -50,10 +52,15 @@ class FloorMap {
         this.droptile.destroy();
     }
 
-
-
     walkinlava() {
         this.scene.player.takeDamage(100);
+    }
+
+    getRandomTileCoords() {
+      let index = Math.floor(Math.random() * this.tilesLeft);
+      let tile = this.tiles[index];
+
+      return [tile.x, tile.y]
     }
 }
 

@@ -54,14 +54,14 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     idle() {
-        this.anims.play('idle');
+        this.play('idle');
     }
 
     fire(x, y) {
         this.anims.play('attack');
         this.once('animationcomplete', this.idle, this);
         let bullet = this.bullets.get();
-
+        bullet.setTexture("enemy_bullet");
         if (bullet) {
             bullet.fire(this.x, this.y, x, y);
         }
@@ -75,6 +75,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
             this.once('animationcomplete', this.removeEnemy, this);
         }
     }
+
+
 
     removeEnemy() {
         this.destroy();
