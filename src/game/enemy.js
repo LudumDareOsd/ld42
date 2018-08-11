@@ -22,6 +22,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.speed = Phaser.Math.GetSpeed(2000, 1);
         this.scene.physics.add.overlap(this.player, this.bullets, this.playerhit, null, this);
         this.scene.physics.add.collider(this, this.player);
+        this.on('animationcomplete', this.completeAnimation, this);
         this.idle();
     }
 
@@ -55,31 +56,42 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     idle() {
         this.play('idle');
+        this.currentAnimation = 'idle';
+    }
+
+    completeAnimation() {
+        if (this.currentAnimation == 'die') {
+            this.removeEnemy();
+        }
+
+        if (this.currentAnimation == 'attack') {
+            this.idle();
+        }
     }
 
     fire(x, y) {
-        this.play('attack');
-        window.setTimeout(() => {
-            this.idle();
-        }, 300);
+        if (this.currentAnimation != 'die') {
+            this.play('attack');
+            this.currentAnimation = 'attack';
 
-        let bullet = this.bullets.get();
-        bullet.setTexture("enemy_bullet");
-        if (bullet) {
-            bullet.fire(this.x, this.y, x, y);
+            let bullet = this.bullets.get();
+            bullet.setTexture("enemy_bullet");
+            if (bullet) {
+                bullet.fire(this.x, this.y, x, y);
+            }
         }
     }
 
     takeDamage(value) {
-        this.hp--;
+        if (this.currentAnimation != 'die') {
+            this.hp--;
 
-        if (this.hp <= 0) {
-            this.play('die');
-            this.on('animationcomplete', this.removeEnemy, this);
+            if (this.hp <= 0) {
+                this.play('die');
+                this.currentAnimation = 'die';
+            }
         }
     }
-
-    
 
     removeEnemy() {
         this.destroy();
