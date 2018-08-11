@@ -1,4 +1,5 @@
 class GameScene extends Phaser.Scene {
+
     constructor(test) {
         super({
             key: 'GameScene'
@@ -6,11 +7,11 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-
+      
     }
 
     create() {
-
+      
     }
 
     update(time, delta) {}

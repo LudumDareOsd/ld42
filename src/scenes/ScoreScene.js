@@ -1,18 +1,21 @@
 class ScoreScene extends Phaser.Scene {
-    constructor(test) {
+
+    constructor() {
         super({
             key: 'ScoreScene'
         });
     }
+
     preload() {
-       
+
     }
+
     create() {
-       
+
     }
 
     update(time, delta) {
-        
+
     }
 }
 
