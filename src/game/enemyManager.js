@@ -34,7 +34,7 @@ class EnemyManager {
     }
 
     enemyHit(enemy, bullet) {
-        if(this.player.rage) {
+        if(this.player.raging) {
           enemy.takeDamage(4);
         } else {
           enemy.takeDamage(1);

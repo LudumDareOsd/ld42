@@ -42,11 +42,13 @@ class Player extends Phaser.GameObjects.Sprite {
             this.mouseY = pointer.y;
         });
 
-        this.rage = false;
+        this.raging = false;
         this.ragetimer = 0;
 
-        this.speed = 100;
+        this.speedvalue = 100;
         this.speedtimer = 0;
+
+        this.weapon = 'gun';
     }
 
     preUpdate(time, delta) {
@@ -60,19 +62,19 @@ class Player extends Phaser.GameObjects.Sprite {
             this.body.setVelocity(0, 0);
 
             if (this.left.isDown || this.left2.isDown) {
-                this.body.setVelocityX(-this.speed);
+                this.body.setVelocityX(-this.speedvalue);
             }
 
             if (this.right.isDown || this.right2.isDown) {
-                this.body.setVelocityX(this.speed);
+                this.body.setVelocityX(this.speedvalue);
             }
 
             if (this.up.isDown || this.up2.isDown) {
-                this.body.setVelocityY(-this.speed);
+                this.body.setVelocityY(-this.speedvalue);
             }
 
             if (this.down.isDown || this.down2.isDown) {
-                this.body.setVelocityY(this.speed);
+                this.body.setVelocityY(this.speedvalue);
             }
 
             this.setRotation(Phaser.Math.Angle.Between(this.mouseX, this.mouseY, this.x, this.y) - Math.PI / 2);
@@ -81,13 +83,13 @@ class Player extends Phaser.GameObjects.Sprite {
         if(this.ragetimer > 0) {
           this.ragetimer -= delta;
         } else {
-          this.rage = false;
+          this.raging = false;
         }
 
         if(this.speedtimer > 0) {
           this.speedtimer -= delta;
         } else {
-          this.speed = 100;
+          this.speedvalue = 100;
         }
     }
 
@@ -119,12 +121,20 @@ class Player extends Phaser.GameObjects.Sprite {
 
     rage() {
       this.ragetimer = 10000;
-      this.rage = true;
+      this.raging = true;
     }
 
     speed() {
       this.speedtimer = 10000;
-      this.speed = 200;
+      this.speedvalue = 200;
+    }
+
+    mashineGun() {
+
+    }
+
+    shotgun() {
+      
     }
 }
 

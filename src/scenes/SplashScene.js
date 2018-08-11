@@ -18,6 +18,8 @@ class SplashScene extends Phaser.Scene {
         this.load.image("hud", "../../assets/image/HUD_background.png");
         this.load.image("beer", "../../assets/image/beer.png");
         this.load.image("beers", "../../assets/image/beers.png");
+        this.load.image("rage", "../../assets/image/rage.png");
+        this.load.image("speed", "../../assets/image/speed.png");
 
         this.load.spritesheet("blob",
             "../../assets/image/blob.png", {

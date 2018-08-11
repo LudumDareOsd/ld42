@@ -89,7 +89,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     takeDamage(value) {
         if (this.currentAnimation != 'die') {
-            this.hp--;
+            this.hp -= value;
 
             if (this.hp <= 0) {
                 this.play('die');
@@ -108,7 +108,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     firecd() {
-        return Math.floor(2500 + Math.random() * 1000);
+        return Math.floor(500 + Math.random() * 1000);
     }
 }
 
