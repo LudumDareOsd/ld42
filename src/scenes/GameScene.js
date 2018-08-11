@@ -1,6 +1,7 @@
 import Player from "../game/player";
 import Enemy from "../game/enemy";
 import EnemyManager from "../game/enemyManager";
+import FloorMap from "../game/floorMap";
 
 class GameScene extends Phaser.Scene {
 
@@ -14,11 +15,9 @@ class GameScene extends Phaser.Scene {
 
     create() {
         this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava').setScale(2);
-        this.floor = this.add.tileSprite(320, 192, 288, 160, 'floor').setScale(2);
+        this.map = new FloorMap(this);
         this.player = this.add.existing(new Player(this, 320, 240)).setScale(2);
-        // this.enemy = this.add.existing(new Enemy(this.player, this, 420, 340)).setScale(2);
-
-        
+        this.droptimer = 3000;
 
         this.ground = this.add.zone(48, 48).setSize(544, 288);
         this.physics.world.enable(this.ground);
@@ -33,12 +32,21 @@ class GameScene extends Phaser.Scene {
 
     update(time, delta) {
         this.player.update(time, delta);
-
-        if (!this.itersects(this.player, this.ground)) {
-            this.player.destroy();
+        this.enemyManager.update(time, delta);
+        if (this.player.body) {
+            if (!this.itersects(this.player, this.ground)) {
+                this.player.takeDamage(100);
+            }
         }
 
         this.enemyManager.generateEnemy();
+
+        this.droptimer -= delta;
+
+        if(this.droptimer <= 0) {
+          this.map.dropTile();
+          this.droptimer = 3000;
+        }
     }
 
     itersects(a, b) {

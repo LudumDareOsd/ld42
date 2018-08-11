@@ -4,20 +4,26 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     constructor(player, scene, x, y) {
         super(scene, x, y);
-
+        this.player = player;
         this.setTexture('enemy');
         this.setPosition(x, y);
         this.hp = 3;
+        this.firetimer = this.firecd();
 
         this.scene.physics.add.existing(this, false);
         this.body.setCollideWorldBounds(true);
         this.body.setBounce(1, 1);
 
-        this.bullets = this.scene.add.group({
+        this.bullets = this.scene.physics.add.group({
             classType: Bullet,
-            maxSize: 10,
+            maxSize: 5,
             runChildUpdate: true
         });
+
+        this.speed = Phaser.Math.GetSpeed(2000, 1);
+        this.scene.physics.add.overlap(this.player, this.bullets, this.playerhit, null, this);
+        this.scene.physics.add.collider(this, this.player);
+
     }
 
     preUpdate(time, delta) {
@@ -29,16 +35,23 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         this.body.setVelocity(0, 0);
 
-        // this.body.setVelocityX(-100);
+        if (this.player.active == true) {
+            let angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, this.x, this.y);
 
-        // this.body.setVelocityX(100);
+            let incX = Math.cos(angle);
+            let incY = Math.sin(angle);
 
-        // this.body.setVelocityY(-100);
+            this.setRotation(angle - Math.PI / 2);
 
-        // this.body.setVelocityY(100);
+            this.body.setVelocityX(-(incX * (this.speed * delta)));
+            this.body.setVelocityY(-(incY * (this.speed * delta)));
 
-
-        this.setRotation(Phaser.Math.Angle.Between(this.player.x, this.player.y, this.x, this.y) - Math.PI / 2);
+            this.firetimer -= delta;
+            if (this.firetimer <= 0) {
+                this.fire(this.player.x, this.player.y);
+                this.firetimer = this.firecd();
+            }
+        }
     }
 
     fire(x, y) {
@@ -50,11 +63,20 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     takeDamage(value) {
-      this.hp--;
+        this.hp--;
 
-      if(this.hp <= 0) {
-        this.destroy();
-      }
+        if (this.hp <= 0) {
+            this.destroy();
+        }
+    }
+
+    playerhit(player, bullet) {
+        player.takeDamage(10);
+        bullet.destroy();
+    }
+
+    firecd() {
+        return Math.floor(500 + Math.random() * 1000);
     }
 }
 

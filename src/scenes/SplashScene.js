@@ -1,5 +1,3 @@
-import { S_IFREG } from "constants";
-
 class SplashScene extends Phaser.Scene {
 
     constructor() {
@@ -15,6 +13,9 @@ class SplashScene extends Phaser.Scene {
         this.load.image("lava", "../../assets/image/lava_tile.png");
         this.load.image("floor", "../../assets/image/floor_tile.png");
         this.load.image("player_bullet", "../../assets/image/player_bullet.png");
+        this.load.image("blob", "../../assets/image/blob-anim.png");
+        this.load.image("floordrop1", "../../assets/image/floor_dropping_tile.png");
+        this.load.image("floordrop2", "../../assets/image/floor_lava_tile.png");
     }
 
     create() {
@@ -23,9 +24,9 @@ class SplashScene extends Phaser.Scene {
     }
 
     update() {
-      if(this.space.isDown) {
-        this.scene.switch('GameScene');
-      }
+        if (this.space.isDown) {
+            this.scene.switch('GameScene');
+        }
     }
 }
 

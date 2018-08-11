@@ -5,6 +5,7 @@ class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y);
 
+        this.hp = 100;
         this.setTexture('player');
         this.setPosition(x, y);
 
@@ -49,32 +50,44 @@ class Player extends Phaser.GameObjects.Sprite {
     update(time, delta) {
         super.update(time, delta);
 
-        this.body.setVelocity(0, 0);
+        if (this.body) {
+            this.body.setVelocity(0, 0);
 
-        if (this.left.isDown || this.left2.isDown) {
-            this.body.setVelocityX(-100);
+            if (this.left.isDown || this.left2.isDown) {
+                this.body.setVelocityX(-100);
+            }
+
+            if (this.right.isDown || this.right2.isDown) {
+                this.body.setVelocityX(100);
+            }
+
+            if (this.up.isDown || this.up2.isDown) {
+                this.body.setVelocityY(-100);
+            }
+
+            if (this.down.isDown || this.down2.isDown) {
+                this.body.setVelocityY(100);
+            }
+
+            this.setRotation(Phaser.Math.Angle.Between(this.mouseX, this.mouseY, this.x, this.y) - Math.PI / 2);
         }
-
-        if (this.right.isDown || this.right2.isDown) {
-            this.body.setVelocityX(100);
-        }
-
-        if (this.up.isDown || this.up2.isDown) {
-            this.body.setVelocityY(-100);
-        }
-
-        if (this.down.isDown || this.down2.isDown) {
-            this.body.setVelocityY(100);
-        }
-
-        this.setRotation(Phaser.Math.Angle.Between(this.mouseX, this.mouseY, this.x, this.y) - Math.PI/2);
     }
 
     fire(x, y) {
-        let bullet = this.bullets.get();
+        if (this.active == true) {
+            let bullet = this.bullets.get();
 
-        if (bullet) {
-            bullet.fire(this.x, this.y, x, y);
+            if (bullet) {
+                bullet.fire(this.x, this.y, x, y);
+            }
+        }
+    }
+
+    takeDamage(value) {
+        this.hp -= value;
+
+        if (this.hp <= 0) {
+            this.destroy();
         }
     }
 
