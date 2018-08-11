@@ -6,12 +6,13 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.player = player;
 
         this.setPosition(x, y);
-        this.hp = 3;
+        this.hp = 4;
         this.firetimer = this.firecd();
 
         this.scene.physics.add.existing(this, false);
         this.body.setCollideWorldBounds(true);
         this.body.setBounce(1, 1);
+        this.body.setSize(12, 12, true);
 
         this.bullets = this.scene.physics.add.group({
             classType: Bullet,
@@ -22,6 +23,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.speed = Phaser.Math.GetSpeed(2000, 1);
         this.scene.physics.add.overlap(this.player, this.bullets, this.playerhit, null, this);
         this.scene.physics.add.collider(this, this.player);
+
+        this.setSize(4, 4, true);
+
         this.on('animationcomplete', this.completeAnimation, this);
         this.idle();
     }
@@ -76,6 +80,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
             let bullet = this.bullets.get();
             bullet.setTexture("enemy_bullet");
+            bullet.speed = Phaser.Math.GetSpeed(400, 1);
             if (bullet) {
                 bullet.fire(this.x, this.y, x, y);
             }

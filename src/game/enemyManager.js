@@ -28,12 +28,17 @@ class EnemyManager {
         if (this.enemyGroup.children.entries.length < this.nrOfEnemies && this.totalEnemies > this.enemiesCreated) {
             let pos = this.getRandPosition();
             this.enemyGroup.add(new Enemy(this.player, this.scene, pos[0], pos[1]).setScale(2).setDepth(5), true);
+            
             this.enemiesCreated++;
         }
     }
 
     enemyHit(enemy, bullet) {
-        enemy.takeDamage(1);
+        if(this.player.rage) {
+          enemy.takeDamage(4);
+        } else {
+          enemy.takeDamage(1);
+        }
 
         bullet.disable();
     }

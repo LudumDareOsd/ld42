@@ -17,10 +17,13 @@ class SplashScene extends Phaser.Scene {
         this.load.image("floordrop2", "../../assets/image/floor_lava_tile.png");
         this.load.image("hud", "../../assets/image/HUD_background.png");
         this.load.image("beer", "../../assets/image/beer.png");
+        this.load.image("beers", "../../assets/image/beers.png");
 
         this.load.spritesheet("blob",
-            "../../assets/image/blob.png",
-            { frameWidth: 16, frameHeight: 16 }
+            "../../assets/image/blob.png", {
+                frameWidth: 16,
+                frameHeight: 16
+            }
         );
     }
 
