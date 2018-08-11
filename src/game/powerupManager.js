@@ -1,4 +1,7 @@
 import Beer from "./powerups/beer";
+import Beers from "./powerups/beers";
+import Rage from "./powerups/rage";
+import Speed from "./powerups/speed";
 
 class PowerupManager {
     constructor(scene, map) {
@@ -19,16 +22,32 @@ class PowerupManager {
         }
     }
 
-    spawnPowerup() {}
+    spawnPowerup() {
+        let rand = Math.floor(Math.random() * 2);
+        let coords = this.map.getRandomTileCoords();
+
+        if (rand == 1) {
+            this.powerups.add(new Beer(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
+        } else {
+            this.powerups.add(new Beers(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
+        }
+    }
 
     spawnLife() {
+        let rand = Math.floor(Math.random() * 5);
         let coords = this.map.getRandomTileCoords();
-        this.powerups.add(new Beer(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
+
+        if (rand == 1) {
+            this.powerups.add(new Rage(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
+        } else {
+            this.powerups.add(new Speed(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
+        }
+
     }
 
     hitpowerup(player, powerup) {
-      powerup.grab(player);
-      powerup.destroy();
+        powerup.grab(player);
+        powerup.destroy();
     }
 }
 

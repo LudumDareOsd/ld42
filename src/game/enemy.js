@@ -6,12 +6,13 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.player = player;
 
         this.setPosition(x, y);
-        this.hp = 3;
+        this.hp = 4;
         this.firetimer = this.firecd();
 
         this.scene.physics.add.existing(this, false);
         this.body.setCollideWorldBounds(true);
         this.body.setBounce(1, 1);
+        this.body.setSize(12, 12, true);
 
         this.bullets = this.scene.physics.add.group({
             classType: Bullet,
@@ -22,6 +23,10 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.speed = Phaser.Math.GetSpeed(2000, 1);
         this.scene.physics.add.overlap(this.player, this.bullets, this.playerhit, null, this);
         this.scene.physics.add.collider(this, this.player);
+
+        this.setSize(4, 4, true);
+
+        this.on('animationcomplete', this.completeAnimation, this);
         this.idle();
     }
 
@@ -55,28 +60,43 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     idle() {
         this.play('idle');
+        this.currentAnimation = 'idle';
+    }
+
+    completeAnimation() {
+        if (this.currentAnimation == 'die') {
+            this.removeEnemy();
+        }
+
+        if (this.currentAnimation == 'attack') {
+            this.idle();
+        }
     }
 
     fire(x, y) {
-        this.anims.play('attack');
-        this.once('animationcomplete', this.idle, this);
-        let bullet = this.bullets.get();
-        bullet.setTexture("enemy_bullet");
-        if (bullet) {
-            bullet.fire(this.x, this.y, x, y);
+        if (this.currentAnimation != 'die') {
+            this.play('attack');
+            this.currentAnimation = 'attack';
+
+            let bullet = this.bullets.get();
+            bullet.setTexture("enemy_bullet");
+            bullet.speed = Phaser.Math.GetSpeed(400, 1);
+            if (bullet) {
+                bullet.fire(this.x, this.y, x, y);
+            }
         }
     }
 
     takeDamage(value) {
-        this.hp--;
+        if (this.currentAnimation != 'die') {
+            this.hp -= value;
 
-        if (this.hp <= 0) {
-            this.anims.play('die');
-            this.once('animationcomplete', this.removeEnemy, this);
+            if (this.hp <= 0) {
+                this.play('die');
+                this.currentAnimation = 'die';
+            }
         }
     }
-
-
 
     removeEnemy() {
         this.destroy();
