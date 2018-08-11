@@ -13,11 +13,11 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.lava = this.add.tileSprite(320, 240, 640, 480, 'lava');
-        this.ui = this.add.tileSprite(320, 192, 608, 352, 'floor');
-        this.player = this.add.existing(new Player(this, 320, 240));
+        this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava').setScale(2);
+        this.ui = this.add.tileSprite(320, 192, 304, 176, 'floor').setScale(2);
+        this.player = this.add.existing(new Player(this, 320, 240)).setScale(2);
 
-        this.ground = this.add.zone(24, 24).setSize(592, 336);
+        this.ground = this.add.zone(32, 32).setSize(576, 320);
         this.physics.world.enable(this.ground);
 
         this.ground.body.setAllowGravity(false);
