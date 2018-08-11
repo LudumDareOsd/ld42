@@ -10,8 +10,7 @@ class SplashScene extends Phaser.Scene {
 
     preload() {
         this.load.image("logo", "../../assets/Original/splash.png");
-        this.load.image("player", "../../assets/image/player_small.png");
-        this.load.image("player_big", "../../assets/image/player_big.png");
+        this.load.image("player", "../../assets/image/player.png");
         this.load.image("lava", "../../assets/image/lava_tile.png");
         this.load.image("floor", "../../assets/image/floor_tile.png");
         this.load.image("player_bullet", "../../assets/image/player_bullet.png");

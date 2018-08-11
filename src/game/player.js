@@ -5,7 +5,7 @@ class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y);
 
-        this.setTexture('player_big');
+        this.setTexture('player');
         this.setPosition(x, y);
 
         this.left = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -29,8 +29,16 @@ class Player extends Phaser.GameObjects.Sprite {
             runChildUpdate: true
         });
 
+        this.mouseX = 0;
+        this.mouseY = 0;
+
         this.scene.input.on('pointerdown', (pointer) => {
             this.fire(pointer.x, pointer.y);
+        });
+
+        this.scene.input.on('pointermove', (pointer) => {
+            this.mouseX = pointer.x;
+            this.mouseY = pointer.y;
         });
     }
 
@@ -58,6 +66,8 @@ class Player extends Phaser.GameObjects.Sprite {
         if (this.down.isDown || this.down2.isDown) {
             this.body.setVelocityY(100);
         }
+
+        this.setRotation(Phaser.Math.Angle.Between(this.mouseX, this.mouseY, this.x, this.y) - Math.PI/2);
     }
 
     fire(x, y) {
