@@ -27,7 +27,7 @@ class EnemyManager {
     generateEnemy() {
         if (this.enemyGroup.children.entries.length < this.nrOfEnemies && this.totalEnemies > this.enemiesCreated) {
             let pos = this.getRandPosition();
-            this.enemyGroup.add(new Enemy(this.player, this.scene, pos[0], pos[1]).setScale(2), true);
+            this.enemyGroup.add(new Enemy(this.player, this.scene, pos[0], pos[1]).setScale(2).setDepth(5), true);
             this.enemiesCreated++;
         }
     }

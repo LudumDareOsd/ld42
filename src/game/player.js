@@ -91,6 +91,14 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
+    heal(value) {
+      this.hp += value;
+
+      if(this.hp > 100) {
+        this.hp = 100;
+      }
+    }
+
 }
 
 export default Player;

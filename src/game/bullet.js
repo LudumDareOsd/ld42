@@ -1,7 +1,8 @@
 class Bullet extends Phaser.GameObjects.Sprite {
     constructor(scene) {
         super(scene, 0, 0, 'player_bullet');
-
+        this.setScale(1.5);
+        this.setDepth(5);
         this.incX = 0;
         this.incY = 0;
         this.lifespan = 0;

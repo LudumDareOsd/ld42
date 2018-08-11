@@ -23,7 +23,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.speed = Phaser.Math.GetSpeed(2000, 1);
         this.scene.physics.add.overlap(this.player, this.bullets, this.playerhit, null, this);
         this.scene.physics.add.collider(this, this.player);
-
     }
 
     preUpdate(time, delta) {
@@ -56,7 +55,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     fire(x, y) {
         let bullet = this.bullets.get();
-
+        bullet.setTexture("enemy_bullet");
         if (bullet) {
             bullet.fire(this.x, this.y, x, y);
         }
