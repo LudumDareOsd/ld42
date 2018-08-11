@@ -1,5 +1,6 @@
 import Player from "../game/player";
 import Enemy from "../game/enemy";
+import EnemyManager from "../game/enemyManager";
 
 class GameScene extends Phaser.Scene {
 
@@ -9,16 +10,15 @@ class GameScene extends Phaser.Scene {
         });
     }
 
-    preload() {
-    }
+    preload() {}
 
     create() {
         this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava').setScale(2);
         this.floor = this.add.tileSprite(320, 192, 288, 160, 'floor').setScale(2);
         this.player = this.add.existing(new Player(this, 320, 240)).setScale(2);
-        this.enemy = this.add.existing(new Enemy(this.player, this, 420, 340)).setScale(2);
+        // this.enemy = this.add.existing(new Enemy(this.player, this, 420, 340)).setScale(2);
 
-        this.physics.add.collider(this.enemy, this.player.bullets);
+        
 
         this.ground = this.add.zone(48, 48).setSize(544, 288);
         this.physics.world.enable(this.ground);
@@ -27,6 +27,8 @@ class GameScene extends Phaser.Scene {
         this.ground.body.moves = false;
 
         this.physics.add.overlap(this.player, this.ground);
+
+        this.enemyManager = new EnemyManager(this.player, this, 1);
     }
 
     update(time, delta) {
@@ -35,6 +37,8 @@ class GameScene extends Phaser.Scene {
         if (!this.itersects(this.player, this.ground)) {
             this.player.destroy();
         }
+
+        this.enemyManager.generateEnemy();
     }
 
     itersects(a, b) {

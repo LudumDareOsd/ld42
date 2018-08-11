@@ -7,6 +7,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         this.setTexture('enemy');
         this.setPosition(x, y);
+        this.hp = 3;
 
         this.scene.physics.add.existing(this, false);
         this.body.setCollideWorldBounds(true);
@@ -14,7 +15,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         this.bullets = this.scene.add.group({
             classType: Bullet,
-            maxSize: 50,
+            maxSize: 10,
             runChildUpdate: true
         });
     }
@@ -48,6 +49,13 @@ class Enemy extends Phaser.GameObjects.Sprite {
         }
     }
 
+    takeDamage(value) {
+      this.hp--;
+
+      if(this.hp <= 0) {
+        this.destroy();
+      }
+    }
 }
 
 export default Enemy;

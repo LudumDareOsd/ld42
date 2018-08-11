@@ -27,16 +27,18 @@ class Bullet extends Phaser.GameObjects.Sprite {
     }
 
     update(time, delta) {
-      this.lifespan -= delta;
+        this.lifespan -= delta;
 
-      this.body.setVelocityX(-(this.incX * (this.speed * delta) * 50));
-      this.body.setVelocityY(-(this.incY * (this.speed * delta) * 50));
+        this.body.setVelocityX(-(this.incX * (this.speed * delta) * 50));
+        this.body.setVelocityY(-(this.incY * (this.speed * delta) * 50));
 
-      if (this.lifespan <= 0)
-      {
-          this.setActive(false);
-          this.setVisible(false);
-      }
+        if (this.lifespan <= 0) {
+            this.disable();
+        }
+    }
+
+    disable() {
+        this.destroy();
     }
 }
 
