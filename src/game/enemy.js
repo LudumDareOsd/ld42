@@ -1,11 +1,10 @@
 import Bullet from "./bullet";
 
 class Enemy extends Phaser.GameObjects.Sprite {
-
     constructor(player, scene, x, y) {
         super(scene, x, y);
         this.player = player;
-        this.setTexture('enemy');
+
         this.setPosition(x, y);
         this.hp = 3;
         this.firetimer = this.firecd();
@@ -23,6 +22,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.speed = Phaser.Math.GetSpeed(2000, 1);
         this.scene.physics.add.overlap(this.player, this.bullets, this.playerhit, null, this);
         this.scene.physics.add.collider(this, this.player);
+        this.idle();
     }
 
     preUpdate(time, delta) {
@@ -53,7 +53,16 @@ class Enemy extends Phaser.GameObjects.Sprite {
         }
     }
 
+    idle() {
+        this.play('idle');
+    }
+
     fire(x, y) {
+        this.play('attack');
+        window.setTimeout(() => {
+            this.idle();
+        }, 300);
+
         let bullet = this.bullets.get();
         bullet.setTexture("enemy_bullet");
         if (bullet) {
@@ -65,8 +74,15 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.hp--;
 
         if (this.hp <= 0) {
-            this.destroy();
+            this.play('die');
+            this.on('animationcomplete', this.removeEnemy, this);
         }
+    }
+
+    
+
+    removeEnemy() {
+        this.destroy();
     }
 
     playerhit(player, bullet) {
@@ -75,7 +91,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     firecd() {
-        return Math.floor(500 + Math.random() * 1000);
+        return Math.floor(2500 + Math.random() * 1000);
     }
 }
 

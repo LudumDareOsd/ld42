@@ -30,6 +30,36 @@ class GameScene extends Phaser.Scene {
 
         this.enemyManager = new EnemyManager(this.player, this, 1);
         this.powerupManager = new PowerupManager(this, this.map);
+
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('blob', {
+                start: 0,
+                end: 3
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'attack',
+            frames: this.anims.generateFrameNumbers('blob', {
+                start: 4,
+                end: 6
+            }),
+            frameRate: 10,
+            repeat: 0
+        });
+
+        this.anims.create({
+            key: 'die',
+            frames: this.anims.generateFrameNumbers('blob', {
+                start: 7,
+                end: 9
+            }),
+            frameRate: 10,
+            repeat: 0
+        });
     }
 
     update(time, delta) {
