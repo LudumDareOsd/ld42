@@ -23,9 +23,9 @@ class Player extends Phaser.GameObjects.Sprite {
         this.scene.physics.add.existing(this, false);
         this.body.setCollideWorldBounds(true);
 
-        this.bullets = this.scene.add.group({
+        this.bullets = this.scene.physics.add.group({
             classType: Bullet,
-            maxSize: 10,
+            maxSize: 50,
             runChildUpdate: true
         });
 
@@ -74,8 +74,6 @@ class Player extends Phaser.GameObjects.Sprite {
         let bullet = this.bullets.get();
 
         if (bullet) {
-            // let offset = new Phaser.Geom.Point(0, -this.gun.height / 2);
-            // Phaser.Math.Rotate(offset, this.gun.rotation);
             bullet.fire(this.x, this.y, x, y);
         }
     }
