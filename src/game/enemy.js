@@ -5,27 +5,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
         super(scene, x, y);
         this.player = player;
 
-        this.scene.anims.create({
-            key: 'idle',
-            frames: this.scene.anims.generateFrameNumbers('blob', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.scene.anims.create({
-            key: 'attack',
-            frames: this.scene.anims.generateFrameNumbers('blob', { start: 4, end: 6 }),
-            frameRate: 10,
-            repeat: 0
-        });
-
-        this.scene.anims.create({
-            key: 'die',
-            frames: this.scene.anims.generateFrameNumbers('blob', { start: 7, end: 9 }),
-            frameRate: 10,
-            repeat: 0
-        });
-
         this.setPosition(x, y);
         this.hp = 3;
         this.firetimer = this.firecd();
@@ -79,12 +58,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     fire(x, y) {
-        this.anims.pause();
         this.anims.play('attack');
-        window.setTimeout(() => {
-            this.idle();
-        }, 300);
-
+        this.once('animationcomplete', this.idle, this);
         let bullet = this.bullets.get();
 
         if (bullet) {
@@ -97,7 +72,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         if (this.hp <= 0) {
             this.anims.play('die');
-            this.on('animationcomplete', this.removeEnemy, this);
+            this.once('animationcomplete', this.removeEnemy, this);
         }
     }
 
@@ -111,7 +86,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     firecd() {
-        return Math.floor(2500 + Math.random() * 1000);
+        return Math.floor(500 + Math.random() * 1000);
     }
 }
 
