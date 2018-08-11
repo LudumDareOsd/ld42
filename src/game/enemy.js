@@ -1,11 +1,31 @@
 import Bullet from "./bullet";
 
 class Enemy extends Phaser.GameObjects.Sprite {
-
     constructor(player, scene, x, y) {
         super(scene, x, y);
         this.player = player;
-        this.setTexture('enemy');
+
+        this.scene.anims.create({
+            key: 'idle',
+            frames: this.scene.anims.generateFrameNumbers('blob', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.scene.anims.create({
+            key: 'attack',
+            frames: this.scene.anims.generateFrameNumbers('blob', { start: 4, end: 6 }),
+            frameRate: 10,
+            repeat: 0
+        });
+
+        this.scene.anims.create({
+            key: 'die',
+            frames: this.scene.anims.generateFrameNumbers('blob', { start: 7, end: 9 }),
+            frameRate: 10,
+            repeat: 0
+        });
+
         this.setPosition(x, y);
         this.hp = 3;
         this.firetimer = this.firecd();
@@ -23,7 +43,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.speed = Phaser.Math.GetSpeed(2000, 1);
         this.scene.physics.add.overlap(this.player, this.bullets, this.playerhit, null, this);
         this.scene.physics.add.collider(this, this.player);
-
+        this.idle();
     }
 
     preUpdate(time, delta) {
@@ -54,7 +74,17 @@ class Enemy extends Phaser.GameObjects.Sprite {
         }
     }
 
+    idle() {
+        this.anims.play('idle');
+    }
+
     fire(x, y) {
+        this.anims.pause();
+        this.anims.play('attack');
+        window.setTimeout(() => {
+            this.idle();
+        }, 300);
+
         let bullet = this.bullets.get();
 
         if (bullet) {
@@ -66,8 +96,13 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.hp--;
 
         if (this.hp <= 0) {
-            this.destroy();
+            this.anims.play('die');
+            this.on('animationcomplete', this.removeEnemy, this);
         }
+    }
+
+    removeEnemy() {
+        this.destroy();
     }
 
     playerhit(player, bullet) {
@@ -76,7 +111,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     firecd() {
-        return Math.floor(500 + Math.random() * 1000);
+        return Math.floor(2500 + Math.random() * 1000);
     }
 }
 
