@@ -20,7 +20,7 @@ class GameScene extends Phaser.Scene {
         this.overlay = this.add.image(320, 100, "overlay").setScale(2).setDepth(15);
         this.overlay_game_over = this.add.image(320, 90, "overlay_game_over").setScale(2).setDepth(15);
         this.overlay_get_psyched = this.add.image(315, 90, "overlay_get_psyched").setScale(2).setDepth(15);
-        
+
         this.overlay.visible = false;
         this.overlay_game_over.visible = false;
         this.overlay_get_psyched.visible = false;
@@ -121,7 +121,7 @@ class GameScene extends Phaser.Scene {
             this.enemyManager.update(time, delta);
             this.powerupManager.update(time, delta);
             this.waveManager.update(time, delta);
-            
+
             if (this.player.body) {
                 if (!this.itersects(this.player, this.ground)) {
                     this.player.takeDamage(100);
