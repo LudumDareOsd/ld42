@@ -10,14 +10,17 @@ class Bullet extends Phaser.GameObjects.Sprite {
         this.speed = Phaser.Math.GetSpeed(600, 1);
     }
 
-    fire(x, y, tox, toy) {
+    fire(x, y, tox, toy, aoffset) {
         this.setActive(true);
         this.setVisible(true);
 
-        //  Bullets fire from the middle of the screen to the given x/y
         this.setPosition(x, y);
 
         let angle = Phaser.Math.Angle.Between(tox, toy, x, y);
+
+        if(aoffset) {
+          angle = aoffset + angle;
+        }
 
         this.setRotation(angle);
 

@@ -7,7 +7,7 @@ class EnemyManager {
         this.scene = scene;
         this.nrOfEnemies = 1 + wave;
         this.enemiesCreated = 0;
-        this.totalEnemies = 10 + (5 * wave);
+        this.totalEnemies = (5 * wave);
 
         this.enemies = [];
         this.enemyIndex = 0;

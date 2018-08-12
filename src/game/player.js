@@ -34,7 +34,13 @@ class Player extends Phaser.GameObjects.Sprite {
         this.mouseY = 0;
 
         this.scene.input.on('pointerdown', (pointer) => {
-            this.fire(pointer.x, pointer.y);
+            if (this.firetimer <= 0) {
+                this.fiering = true;
+            }
+        });
+
+        this.scene.input.on('pointerup', (pointer) => {
+            this.fiering = false;
         });
 
         this.scene.input.on('pointermove', (pointer) => {
@@ -42,13 +48,18 @@ class Player extends Phaser.GameObjects.Sprite {
             this.mouseY = pointer.y;
         });
 
+        this.firetimer = 0;
+
         this.raging = false;
         this.ragetimer = 0;
 
         this.speedvalue = 100;
         this.speedtimer = 0;
 
-        this.weapon = 'gun';
+        this.weapon = 'shotgun';
+        this.ammunition = 0;
+
+        this.fiering = false;
     }
 
     preUpdate(time, delta) {
@@ -80,25 +91,66 @@ class Player extends Phaser.GameObjects.Sprite {
             this.setRotation(Phaser.Math.Angle.Between(this.mouseX, this.mouseY, this.x, this.y) - Math.PI / 2);
         }
 
-        if(this.ragetimer > 0) {
-          this.ragetimer -= delta;
+        if (this.ragetimer > 0) {
+            this.ragetimer -= delta;
         } else {
-          this.raging = false;
+            this.raging = false;
         }
 
-        if(this.speedtimer > 0) {
-          this.speedtimer -= delta;
+        if (this.speedtimer > 0) {
+            this.speedtimer -= delta;
         } else {
-          this.speedvalue = 100;
+            this.speedvalue = 100;
         }
+
+
+        if (this.firetimer > 0) {
+            this.firetimer -= delta;
+        }
+
+        if (this.weapon == 'gun') {
+            if (this.fiering) {
+                this.fire(this.mouseX, this.mouseY);
+                this.fiering = false;
+                this.firetimer = 200;
+            }
+        } else if (this.weapon == 'machinegun') {
+            if (this.fiering) {
+                if (this.firetimer <= 0) {
+                    this.fire(this.mouseX, this.mouseY);
+                    this.firetimer = 100;
+                }
+            }
+        } else if (this.weapon == 'shotgun') {
+            if (this.fiering) {
+                if (this.fiering) {
+                    this.fire(this.mouseX, this.mouseY, 0.1);
+                    this.fire(this.mouseX, this.mouseY, 0.05);
+                    this.fire(this.mouseX, this.mouseY, 0);
+                    this.fire(this.mouseX, this.mouseY, -0.05);
+                    this.fire(this.mouseX, this.mouseY, -0.1);
+                    this.fiering = false;
+                    this.firetimer = 400;
+                }
+            }
+        }
+
+        if (this.ammunition <= 0) {
+            this.weapon = 'gun';
+        }
+
     }
 
-    fire(x, y) {
+    fire(x, y, offset) {
         if (this.active == true) {
             let bullet = this.bullets.get();
 
             if (bullet) {
-                bullet.fire(this.x, this.y, x, y);
+
+                bullet.fire(this.x, this.y, x, y, offset);
+                if (this.gun != 'gun') {
+                    this.ammunition--;
+                }
             }
         }
     }
@@ -112,29 +164,37 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     heal(value) {
-      this.hp += value;
+        this.hp += value;
 
-      if(this.hp > 100) {
-        this.hp = 100;
-      }
+        if (this.hp > 100) {
+            this.hp = 100;
+        }
     }
 
     rage() {
-      this.ragetimer = 10000;
-      this.raging = true;
+        this.ragetimer = 10000;
+        this.raging = true;
     }
 
     speed() {
-      this.speedtimer = 10000;
-      this.speedvalue = 200;
+        this.speedtimer = 10000;
+        this.speedvalue = 200;
     }
 
-    mashineGun() {
-
+    machinegun() {
+        if (this.weapon == 'shotgun') {
+            this.ammunition = 0;
+        }
+        this.weapon = 'machinegun';
+        this.ammunition += 50;
     }
 
     shotgun() {
-      
+        if (this.weapon == 'machinegun') {
+            this.ammunition = 0;
+        }
+        this.weapon = 'shotgun';
+        this.ammunition += 50;
     }
 }
 
