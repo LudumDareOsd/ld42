@@ -39,12 +39,12 @@ class SplashScene extends Phaser.Scene {
         this.load.image("machinegun-hud", "../../assets/image/Machinegun-HUD.png");
         this.load.image("healthbar", "../../assets/image/healthbar.png");
         this.load.image("infinite", "../../assets/image/infinite.png");
-        this.load.image("redbar", "../../assets/image/sacrificebar.png");
         this.load.image("titlescreen", "../../assets/image/titlescreen.png");
         this.load.image("press_start", "../../assets/image/press_start.png");
         this.load.image("overlay", "../../assets/image/Overlay.png");
         this.load.image("overlay_game_over", "../../assets/image/Overllay_game_over.png");
         this.load.image("overlay_get_psyched", "../../assets/image/Overlay_Get_Psyched.png");
+        this.load.image("overlay_wave", "../../assets/image/Overlay_Wave.png");
 
         this.input.setDefaultCursor('url(../../assets/image/crosshair.png), pointer');
 

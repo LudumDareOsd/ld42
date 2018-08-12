@@ -83,7 +83,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
             let bullet = this.bullets.get();
             bullet.setTexture("enemy_bullet");
-            bullet.speed = Phaser.Math.GetSpeed(400, 1);
+            bullet.speed = Phaser.Math.GetSpeed(300, 1);
             if (bullet) {
                 bullet.fire(this.x, this.y, x, y);
                 this.scene.sound.play('shoot01', {

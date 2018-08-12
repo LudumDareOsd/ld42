@@ -199,7 +199,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
             if (bullet) {
 
-                bullet.fire(this.x, this.y, x, y, offset);
+                bullet.fire(this.x, this.y, x + 16, y + 16, offset);
             }
         }
     }
