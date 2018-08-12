@@ -132,7 +132,7 @@ class GameScene extends Phaser.Scene {
 
             if (this.droptimer <= 0 && this.waveManager.timeout == false) {
                 this.map.dropTile();
-                this.droptimer = 3000;
+                this.droptimer = 1000;
             }
         } else {
 
