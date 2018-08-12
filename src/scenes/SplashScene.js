@@ -56,6 +56,13 @@ class SplashScene extends Phaser.Scene {
                 frameHeight: 16
             }
         );
+
+        this.load.spritesheet("death",
+            "../../assets/image/death_anim.png", {
+                frameWidth: 32,
+                frameHeight: 32
+            }
+        );
     }
 
     create() {

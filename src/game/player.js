@@ -5,7 +5,7 @@ class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y);
 
-
+        this.dead = false;
         this.score = 0;
         this.hp = 100;
         this.setTexture('player');
@@ -28,7 +28,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.greenbar = this.scene.add.image(146, 462, "healthbar").setScale(2).setDepth(12).setCrop(0, 0, 93, 8);
         this.greenbar.setCrop(0, 0, (this.hp / 100) * 93, 8);
-        
+
         this.ammoinfinite = this.scene.add.image(208, 418, 'infinite').setScale(2).setDepth(11);
 
         this.left = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -190,18 +190,25 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     takeDamage(value) {
-        this.hp -= value;
-        this.updateHpBar();
+        if (!this.dead) {
+            this.hp -= value;
+            this.updateHpBar();
 
-        if (this.hp <= 0) {
-            this.scene.sound.play('death01', {
-                volume: 0.5
-            });
-            this.destroy();
-        } else {
-            this.scene.sound.play('hit01', {
-                volume: 0.1
-            });
+            if (this.hp <= 0) {
+                this.dead = true;
+                this.scene.sound.play('death01', {
+                    volume: 0.5
+                });
+
+                this.play('player_die');
+                this.on('animationcomplete', () => {
+                    this.destroy();
+                });
+            } else {
+                this.scene.sound.play('hit01', {
+                    volume: 0.1
+                });
+            }
         }
     }
 
