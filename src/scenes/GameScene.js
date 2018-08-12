@@ -16,12 +16,7 @@ class GameScene extends Phaser.Scene {
 
     create() {
         this.hud = this.add.image(320, 432, "hud").setScale(2).setDepth(10);
-<<<<<<< HEAD
-        this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava').setScale(2).setDepth(0);
-=======
         this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava', 0).setScale(2).setDepth(0);
-        this.map = new FloorMap(this);
->>>>>>> c107ffe56228a3a80feb462456777b2482f492bf
         this.player = this.add.existing(new Player(this, 320, 240)).setScale(2).setDepth(5);
         this.droptimer = 3000;
         this.lavatimer = 250;
