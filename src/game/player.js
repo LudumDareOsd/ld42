@@ -10,6 +10,12 @@ class Player extends Phaser.GameObjects.Sprite {
         this.hp = 100;
         this.setTexture('player');
         this.setPosition(x, y);
+        this.weapons = [];
+
+        this.weapons.push(this.scene.add.image(80, 418, "handgun-hud").setScale(2).setDepth(11));
+        this.weapons.push(this.scene.add.image(80, 420, "shotgun-hud").setScale(2).setDepth(11));
+        this.weapons.push(this.scene.add.image(80, 420, "machinegun-hud").setScale(2).setDepth(11));
+        this.setWeapon(0);
 
         this.scorenumbers = [];
         this.scorenumbers.push(this.scene.add.tileSprite(450, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
@@ -293,6 +299,14 @@ class Player extends Phaser.GameObjects.Sprite {
         }
 
         this.setNumber(this.ammonumbers, this.ammunition.toString());
+    }
+
+    setWeapon(type) {
+        this.weapons.forEach((weapon) => {
+            weapon.visible = false;
+        });
+
+        this.weapons[type].visible = true;
     }
 
     setInfiniteAmmo() {
