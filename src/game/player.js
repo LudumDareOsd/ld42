@@ -110,6 +110,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (this.weapon == 'gun') {
             if (this.fiering) {
+                this.scene.sound.play('shoot03', {volume: 0.1});
                 this.fire(this.mouseX, this.mouseY);
                 this.fiering = false;
                 this.firetimer = 200;
@@ -117,6 +118,7 @@ class Player extends Phaser.GameObjects.Sprite {
         } else if (this.weapon == 'machinegun') {
             if (this.fiering) {
                 if (this.firetimer <= 0) {
+                    this.scene.sound.play('shoot01', {volume: 0.1});
                     this.fire(this.mouseX, this.mouseY);
                     this.firetimer = 100;
                 }
@@ -124,6 +126,7 @@ class Player extends Phaser.GameObjects.Sprite {
         } else if (this.weapon == 'shotgun') {
             if (this.fiering) {
                 if (this.fiering) {
+                    this.scene.sound.play('explosion01', {volume: 0.1});
                     this.fire(this.mouseX, this.mouseY, 0.1);
                     this.fire(this.mouseX, this.mouseY, 0.05);
                     this.fire(this.mouseX, this.mouseY, 0);
@@ -159,7 +162,10 @@ class Player extends Phaser.GameObjects.Sprite {
         this.hp -= value;
 
         if (this.hp <= 0) {
+            this.scene.sound.play('death01', {volume: 0.5});
             this.destroy();
+        } else {
+            this.scene.sound.play('hit01', {volume: 0.1});
         }
     }
 
@@ -169,16 +175,20 @@ class Player extends Phaser.GameObjects.Sprite {
         if (this.hp > 100) {
             this.hp = 100;
         }
+
+        this.scene.sound.play('beer01', {volume: 0.3});
     }
 
     rage() {
         this.ragetimer = 10000;
         this.raging = true;
+        this.scene.sound.play('powerup01', {volume: 0.3});
     }
 
     speed() {
         this.speedtimer = 10000;
         this.speedvalue = 200;
+        this.scene.sound.play('powerup02', {volume: 0.3});
     }
 
     machinegun() {
@@ -187,6 +197,7 @@ class Player extends Phaser.GameObjects.Sprite {
         }
         this.weapon = 'machinegun';
         this.ammunition += 50;
+        this.scene.sound.play('powerup03', {volume: 0.3});
     }
 
     shotgun() {
@@ -195,6 +206,7 @@ class Player extends Phaser.GameObjects.Sprite {
         }
         this.weapon = 'shotgun';
         this.ammunition += 50;
+        this.scene.sound.play('powerup03', {volume: 0.3});
     }
 }
 
