@@ -5,7 +5,7 @@ class WaveManager {
         this.map = map;
 
         this.wave = 1;
-        this.wavetimer = 3000;
+        this.wavetimer = 0;
         this.timeout = false;
 
         this.enemyManager.startWave(this.wave);
@@ -15,8 +15,9 @@ class WaveManager {
         if (this.enemyManager.isWaveClear()) {
             this.wavetimer -= delta;
             if (this.wavetimer <= 0 && this.timeout == false) {
-                this.wavetimer = 3000;
+                this.wavetimer = 5000;
                 this.timeout = true;
+                this.enemyManager.player.addScore(1337 * 10);
             }
 
             if (this.wavetimer <= 0 && this.timeout == true) {

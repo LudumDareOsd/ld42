@@ -24,10 +24,14 @@ class EnemyManager {
         this.generateEnemy();
     }
 
+    updateSacreficeBar() {
+        // this.redbar.setCrop(0, 0, (this.enemiesCreated / this.totalEnemies) * 92, 8);
+    }
+
     generateEnemy() {
         if (this.enemyGroup.children.entries.length < this.nrOfEnemies && this.totalEnemies > this.enemiesCreated) {
             let pos = this.getRandPosition();
-            this.enemyGroup.add(new Enemy(this.player, this.scene, pos[0], pos[1]).setScale(2).setDepth(5), true);
+            this.enemyGroup.add(new Enemy(this.player, this.scene, pos[0], pos[1], this).setScale(2).setDepth(5), true);
 
             this.enemiesCreated++;
         }
@@ -60,7 +64,7 @@ class EnemyManager {
     }
 
     isWaveClear() {
-      return this.enemyGroup.children.entries.length <= 0 && this.totalEnemies <= this.enemiesCreated
+        return this.enemyGroup.children.entries.length <= 0 && this.totalEnemies <= this.enemiesCreated
     }
 }
 

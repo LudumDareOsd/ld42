@@ -6,15 +6,29 @@ class Player extends Phaser.GameObjects.Sprite {
         super(scene, x, y);
 
 
+        this.score = 0;
         this.hp = 100;
         this.setTexture('player');
         this.setPosition(x, y);
+
+        this.scorenumbers = [];
+        this.scorenumbers.push(this.scene.add.tileSprite(450, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(462, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(474, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(486, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(498, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(510, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(522, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(534, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
 
         this.ammonumbers = [];
         this.ammonumbers.push(this.scene.add.tileSprite(196, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
         this.ammonumbers.push(this.scene.add.tileSprite(208, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
         this.ammonumbers.push(this.scene.add.tileSprite(220, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.hpbar = this.hpbar = this.scene.add.image(146, 462, "healthbar").setScale(2).setDepth(11).setCrop(0, 0, 93, 8);
+
+        this.greenbar = this.scene.add.image(146, 462, "healthbar").setScale(2).setDepth(12).setCrop(0, 0, 93, 8);
+        this.greenbar.setCrop(0, 0, (this.hp / 100) * 93, 8);
+        
         this.ammoinfinite = this.scene.add.image(208, 418, 'infinite').setScale(2).setDepth(11);
 
         this.left = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -118,7 +132,7 @@ class Player extends Phaser.GameObjects.Sprite {
         }
 
         if (this.weapon == 'gun') {
-            if (this.fiering) {
+            if (this.fiering && this.active == true) {
                 this.scene.sound.play('shoot03', {
                     volume: 0.1
                 });
@@ -127,18 +141,20 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.firetimer = 200;
             }
         } else if (this.weapon == 'machinegun') {
-            if (this.fiering) {
+            if (this.fiering && this.active == true) {
                 if (this.firetimer <= 0) {
                     this.scene.sound.play('shoot01', {
                         volume: 0.1
                     });
                     this.fire(this.mouseX, this.mouseY);
+                    this.ammunition--;
+                    this.setAmmo();
                     this.firetimer = 100;
                 }
             }
         } else if (this.weapon == 'shotgun') {
             if (this.fiering) {
-                if (this.fiering) {
+                if (this.fiering && this.active == true) {
                     this.scene.sound.play('explosion01', {
                         volume: 0.1
                     });
@@ -147,6 +163,8 @@ class Player extends Phaser.GameObjects.Sprite {
                     this.fire(this.mouseX, this.mouseY, 0);
                     this.fire(this.mouseX, this.mouseY, -0.05);
                     this.fire(this.mouseX, this.mouseY, -0.1);
+                    this.ammunition--;
+                    this.setAmmo();
                     this.fiering = false;
                     this.firetimer = 400;
                 }
@@ -167,10 +185,6 @@ class Player extends Phaser.GameObjects.Sprite {
             if (bullet) {
 
                 bullet.fire(this.x, this.y, x, y, offset);
-                if (this.weapon != 'gun') {
-                    this.ammunition--;
-                    this.setAmmo();
-                }
             }
         }
     }
@@ -204,7 +218,7 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     updateHpBar() {
-        this.hpbar.setCrop(0, 0, (this.hp / 100) * 93, 8);
+
     }
 
     rage() {
@@ -240,7 +254,7 @@ class Player extends Phaser.GameObjects.Sprite {
             this.ammunition = 0;
         }
         this.weapon = 'shotgun';
-        this.ammunition += 50;
+        this.ammunition += 10;
         this.scene.sound.play('powerup03', {
             volume: 0.3
         });
@@ -270,6 +284,11 @@ class Player extends Phaser.GameObjects.Sprite {
         for (let sprite of this.ammonumbers) {
             sprite.visible = false
         }
+    }
+
+    addScore(value) {
+        this.score += value;
+        this.setNumber(this.scorenumbers, this.score.toString());
     }
 }
 
