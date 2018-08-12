@@ -48,19 +48,25 @@ class PowerupManager {
     }
 
     spawnWeapon() {
-      let rand = Math.floor(Math.random() * 2);
-      let coords = this.map.getRandomTileCoords();
+        let rand = Math.floor(Math.random() * 2);
+        let coords = this.map.getRandomTileCoords();
 
-      if (rand == 1) {
-          this.powerups.add(new MachineGun(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
-      } else {
-          this.powerups.add(new ShotGun(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
-      }
-  }
+        if (rand == 1) {
+            this.powerups.add(new MachineGun(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
+        } else {
+            this.powerups.add(new ShotGun(this.scene, coords[0], coords[1]).setScale(2).setDepth(4), true);
+        }
+    }
 
     hitpowerup(player, powerup) {
         powerup.grab(player);
         powerup.destroy();
+    }
+
+    reset() {
+      while(this.powerups.children.entries.length > 0) {
+        this.powerups.children.entries[0].destroy();
+      }
     }
 }
 

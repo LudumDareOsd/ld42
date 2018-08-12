@@ -2,42 +2,42 @@ import Enemy from "./enemy";
 
 class EnemyManager {
 
-    constructor(player, scene, wave) {
+    constructor(player, scene) {
         this.player = player;
         this.scene = scene;
-        this.nrOfEnemies = 1 + wave;
-        this.enemiesCreated = 0;
-        this.totalEnemies = (5 * wave);
-
-        this.enemies = [];
-        this.enemyIndex = 0;
-        this.activeEnemies = 0;
 
         this.enemyGroup = this.scene.add.group();
-
         this.scene.physics.add.overlap(this.enemyGroup, this.player.bullets, this.enemyHit, null, this);
     }
 
+    startWave(wave) {
+        this.nrOfEnemies = 1 + wave;
+        this.enemiesCreated = 0;
+        this.totalEnemies = (5 * wave);
+    }
+
     update(delta, time) {
-      for(let enemy of this.enemyGroup.children.entries) {
-        enemy.update(delta, time);
-      }
+        for (let enemy of this.enemyGroup.children.entries) {
+            enemy.update(delta, time);
+        }
+
+        this.generateEnemy();
     }
 
     generateEnemy() {
         if (this.enemyGroup.children.entries.length < this.nrOfEnemies && this.totalEnemies > this.enemiesCreated) {
             let pos = this.getRandPosition();
             this.enemyGroup.add(new Enemy(this.player, this.scene, pos[0], pos[1]).setScale(2).setDepth(5), true);
-            
+
             this.enemiesCreated++;
         }
     }
 
     enemyHit(enemy, bullet) {
-        if(this.player.raging) {
-          enemy.takeDamage(4);
+        if (this.player.raging) {
+            enemy.takeDamage(4);
         } else {
-          enemy.takeDamage(1);
+            enemy.takeDamage(1);
         }
 
         bullet.disable();
@@ -57,6 +57,10 @@ class EnemyManager {
         }
 
         return coords;
+    }
+
+    isWaveClear() {
+      return this.enemyGroup.children.entries.length <= 0 && this.totalEnemies <= this.enemiesCreated
     }
 }
 

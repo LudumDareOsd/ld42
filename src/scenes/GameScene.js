@@ -2,6 +2,7 @@ import Player from "../game/player";
 import EnemyManager from "../game/enemyManager";
 import FloorMap from "../game/floorMap";
 import PowerupManager from "../game/powerupManager";
+import WaveManager from "../game/wavemanager";
 
 class GameScene extends Phaser.Scene {
 
@@ -16,7 +17,6 @@ class GameScene extends Phaser.Scene {
     create() {
         this.hud = this.add.image(320, 432, "hud").setScale(2).setDepth(10);
         this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava').setScale(2).setDepth(0);
-        this.map = new FloorMap(this);
         this.player = this.add.existing(new Player(this, 320, 240)).setScale(2).setDepth(5);
         this.droptimer = 3000;
 
@@ -28,8 +28,10 @@ class GameScene extends Phaser.Scene {
 
         this.physics.add.overlap(this.player, this.ground);
 
+        this.map = new FloorMap(this);
         this.enemyManager = new EnemyManager(this.player, this, 1);
         this.powerupManager = new PowerupManager(this, this.map);
+        this.waveManager = new WaveManager(this.enemyManager, this.powerupManager, this.map);
 
         this.anims.create({
             key: 'idle',
@@ -66,6 +68,7 @@ class GameScene extends Phaser.Scene {
         this.player.update(time, delta);
         this.enemyManager.update(time, delta);
         this.powerupManager.update(time, delta);
+        this.waveManager.update(time, delta);
 
         if (this.player.body) {
             if (!this.itersects(this.player, this.ground)) {
@@ -73,11 +76,10 @@ class GameScene extends Phaser.Scene {
             }
         }
 
-        this.enemyManager.generateEnemy();
 
         this.droptimer -= delta;
 
-        if (this.droptimer <= 0) {
+        if (this.droptimer <= 0 && this.waveManager.timeout == false) {
             this.map.dropTile();
             this.droptimer = 3000;
         }
