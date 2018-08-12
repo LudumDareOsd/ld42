@@ -13,6 +13,7 @@ class PowerupManager {
 
         this.powerups = this.scene.physics.add.group();
         this.scene.physics.add.overlap(this.powerups, this.scene.player, this.hitpowerup, null, this);
+        this.scene.physics.add.overlap(this.powerups, this.map.lavaGroup, this.destroypowerup, null, this);
     }
 
     update(time, delta) {
@@ -63,10 +64,14 @@ class PowerupManager {
         powerup.destroy();
     }
 
+    destroypowerup(powerup, lava) {
+        powerup.destroy();
+    }
+
     reset() {
-      while(this.powerups.children.entries.length > 0) {
-        this.powerups.children.entries[0].destroy();
-      }
+        while (this.powerups.children.entries.length > 0) {
+            this.powerups.children.entries[0].destroy();
+        }
     }
 }
 
