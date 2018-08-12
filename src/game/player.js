@@ -18,14 +18,14 @@ class Player extends Phaser.GameObjects.Sprite {
         this.setWeapon(0);
 
         this.scorenumbers = [];
-        this.scorenumbers.push(this.scene.add.tileSprite(450, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.scorenumbers.push(this.scene.add.tileSprite(462, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.scorenumbers.push(this.scene.add.tileSprite(474, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.scorenumbers.push(this.scene.add.tileSprite(486, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.scorenumbers.push(this.scene.add.tileSprite(498, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.scorenumbers.push(this.scene.add.tileSprite(510, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.scorenumbers.push(this.scene.add.tileSprite(522, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
-        this.scorenumbers.push(this.scene.add.tileSprite(534, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(516, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(528, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(540, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(552, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(564, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(576, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(588, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.scorenumbers.push(this.scene.add.tileSprite(600, 458, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
 
         this.ammonumbers = [];
         this.ammonumbers.push(this.scene.add.tileSprite(196, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
