@@ -14,6 +14,8 @@ class EnemyManager {
         this.nrOfEnemies = 1 + wave;
         this.enemiesCreated = 0;
         this.totalEnemies = (5 * wave);
+        this.enemysleft = this.totalEnemies;
+        this.player.updateSacreficeBar();
     }
 
     update(delta, time) {
@@ -24,8 +26,8 @@ class EnemyManager {
         this.generateEnemy();
     }
 
-    updateSacreficeBar() {
-        // this.redbar.setCrop(0, 0, (this.enemiesCreated / this.totalEnemies) * 92, 8);
+    enemyKilled() {
+        this.enemysleft--;
     }
 
     generateEnemy() {

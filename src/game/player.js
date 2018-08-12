@@ -5,7 +5,6 @@ class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y);
 
-
         this.score = 0;
         this.hp = 100;
         this.setTexture('player');
@@ -26,9 +25,11 @@ class Player extends Phaser.GameObjects.Sprite {
         this.ammonumbers.push(this.scene.add.tileSprite(208, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
         this.ammonumbers.push(this.scene.add.tileSprite(220, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
 
-        this.greenbar = this.scene.add.image(146, 462, "healthbar").setScale(2).setDepth(12).setCrop(0, 0, 93, 8);
-        this.greenbar.setCrop(0, 0, (this.hp / 100) * 93, 8);
-        
+        this.greenbar = this.scene.add.image(146, 462, "healthbar").setScale(2).setDepth(12);
+        this.redbar = this.scene.add.image(528, 408, "redbar").setScale(2).setDepth(12);
+
+        this.updateHpBar();
+
         this.ammoinfinite = this.scene.add.image(208, 418, 'infinite').setScale(2).setDepth(11);
 
         this.left = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -218,7 +219,13 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     updateHpBar() {
+        this.greenbar.setCrop(0, 0, (this.hp / 100) * 93, 8);
+    }
 
+    updateSacreficeBar() {
+        if (this.active) {
+            // this.redbar.setCrop(0, 0, (this.scene.enemyManager.enemysleft / this.scene.enemyManager.totalEnemies) * 92, 8);
+        }
     }
 
     rage() {

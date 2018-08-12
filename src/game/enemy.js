@@ -1,10 +1,9 @@
 import Bullet from "./bullet";
 
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(player, scene, x, y, enemyManager) {
+    constructor(player, scene, x, y) {
         super(scene, x, y);
         this.player = player;
-        this.enemyManager = enemyManager;
 
         this.setPosition(x, y);
         this.hp = 4;
@@ -67,8 +66,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
     completeAnimation() {
         if (this.currentAnimation == 'die') {
             this.player.addScore(1337);
+            this.scene.enemyManager.enemyKilled();
+            this.player.updateSacreficeBar();
             this.removeEnemy();
-            this.enemyManager.updateSacreficeBar();
         }
 
         if (this.currentAnimation == 'attack') {

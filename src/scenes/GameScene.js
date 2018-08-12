@@ -15,6 +15,7 @@ class GameScene extends Phaser.Scene {
     preload() {}
 
     create() {
+        this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.hud = this.add.image(320, 432, "hud").setScale(2).setDepth(10);
         this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava', 0).setScale(2).setDepth(0);
         this.player = this.add.existing(new Player(this, 320, 240)).setScale(2).setDepth(5);
@@ -119,6 +120,10 @@ class GameScene extends Phaser.Scene {
             this.lava.destroy();
             this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava', this.lavaFrame).setScale(2).setDepth(0);
             this.lavatimer = 250;
+        }
+
+        if (this.space.isDown && !this.player.active) {
+            this.scene.restart();
         }
     }
 
