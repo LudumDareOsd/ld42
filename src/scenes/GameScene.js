@@ -68,6 +68,16 @@ class GameScene extends Phaser.Scene {
         });
 
         this.anims.create({
+            key: 'player_die',
+            frames: this.anims.generateFrameNumbers('death', {
+                start: 0,
+                end: 7
+            }),
+            frameRate: 7,
+            repeat: 0
+        });
+
+        this.anims.create({
             key: 'lava-idle',
             frames: this.anims.generateFrameNumbers('lava', {
                 start: 0,

@@ -5,6 +5,7 @@ class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y);
 
+        this.dead = false;
         this.score = 0;
         this.hp = 100;
         this.setTexture('player');
@@ -96,23 +97,25 @@ class Player extends Phaser.GameObjects.Sprite {
         if (this.body) {
             this.body.setVelocity(0, 0);
 
-            if (this.left.isDown || this.left2.isDown) {
-                this.body.setVelocityX(-this.speedvalue);
-            }
+            if (!this.dead) {
+                if (this.left.isDown || this.left2.isDown) {
+                    this.body.setVelocityX(-this.speedvalue);
+                }
 
-            if (this.right.isDown || this.right2.isDown) {
-                this.body.setVelocityX(this.speedvalue);
-            }
+                if (this.right.isDown || this.right2.isDown) {
+                    this.body.setVelocityX(this.speedvalue);
+                }
 
-            if (this.up.isDown || this.up2.isDown) {
-                this.body.setVelocityY(-this.speedvalue);
-            }
+                if (this.up.isDown || this.up2.isDown) {
+                    this.body.setVelocityY(-this.speedvalue);
+                }
 
-            if (this.down.isDown || this.down2.isDown) {
-                this.body.setVelocityY(this.speedvalue);
-            }
+                if (this.down.isDown || this.down2.isDown) {
+                    this.body.setVelocityY(this.speedvalue);
+                }
 
-            this.setRotation(Phaser.Math.Angle.Between(this.mouseX, this.mouseY, this.x, this.y) - Math.PI / 2);
+                this.setRotation(Phaser.Math.Angle.Between(this.mouseX, this.mouseY, this.x, this.y) - Math.PI / 2);
+            }
         }
 
         if (this.ragetimer > 0) {
@@ -191,18 +194,25 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     takeDamage(value) {
-        this.hp -= value;
-        this.updateHpBar();
+        if (!this.dead) {
+            this.hp -= value;
+            this.updateHpBar();
 
-        if (this.hp <= 0) {
-            this.scene.sound.play('death01', {
-                volume: 0.5
-            });
-            this.destroy();
-        } else {
-            this.scene.sound.play('hit01', {
-                volume: 0.1
-            });
+            if (this.hp <= 0) {
+                this.dead = true;
+                this.scene.sound.play('death01', {
+                    volume: 0.5
+                });
+
+                this.play('player_die');
+                this.on('animationcomplete', () => {
+                    this.destroy();
+                });
+            } else {
+                this.scene.sound.play('hit01', {
+                    volume: 0.1
+                });
+            }
         }
     }
 
