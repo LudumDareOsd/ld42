@@ -19,10 +19,11 @@ class GameScene extends Phaser.Scene {
         this.titlescreen = this.add.image(320, 192, "titlescreen").setScale(2).setDepth(15);
         this.overlay = this.add.image(320, 100, "overlay").setScale(2).setDepth(15);
         this.overlay_game_over = this.add.image(320, 90, "overlay_game_over").setScale(2).setDepth(15);
-        this.overlay_get_psyched = this.add.image(320, 90, "overlay_get_psyched").setScale(2).setDepth(15);
-        
+        this.overlay_get_psyched = this.add.image(315, 90, "overlay_get_psyched").setScale(2).setDepth(15);
+
         this.overlay.visible = false;
         this.overlay_game_over.visible = false;
+        this.overlay_get_psyched.visible = false;
 
         this.press_start = this.add.image(320, 192, "press_start").setScale(2).setDepth(16);
         this.presstarttimer = 500;
@@ -37,7 +38,7 @@ class GameScene extends Phaser.Scene {
         this.lavaDir = true;
 
         this.started = false;
-        this.starttimer = 1000;
+        this.starttimer = 1200;
 
         this.ground = this.add.zone(48, 48).setSize(544, 288);
         this.physics.world.enable(this.ground);
@@ -113,7 +114,9 @@ class GameScene extends Phaser.Scene {
 
 
     update(time, delta) {
-        if (this.started) {
+        if (this.starttimer <= 0) {
+            this.overlay.visible = false;
+            this.overlay_get_psyched.visible = false;
             this.player.update(time, delta);
             this.enemyManager.update(time, delta);
             this.powerupManager.update(time, delta);
@@ -132,7 +135,13 @@ class GameScene extends Phaser.Scene {
                 this.droptimer = 3000;
             }
         } else {
-          
+
+            if (this.started) {
+                this.starttimer -= delta;
+                this.overlay.visible = true;
+                this.overlay_get_psyched.visible = true;
+            }
+
             if (this.space.isDown && this.player.active) {
                 this.started = true;
                 this.titlescreen.destroy();
@@ -176,9 +185,9 @@ class GameScene extends Phaser.Scene {
             this.scene.restart();
         }
 
-        if(this.player.dead) {
-          this.overlay.visible = true;
-          this.overlay_game_over.visible = true;
+        if (this.player.dead) {
+            this.overlay.visible = true;
+            this.overlay_game_over.visible = true;
         }
     }
 
