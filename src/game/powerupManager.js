@@ -17,7 +17,7 @@ class PowerupManager {
 
     update(time, delta) {
         this.poweruptimer -= delta;
-        if (this.poweruptimer <= 0) {
+        if (this.poweruptimer <= 0 && !this.scene.waveManager.timeout) {
             this.spawnPowerup();
             this.spawnLife();
             this.spawnWeapon();
