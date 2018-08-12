@@ -14,7 +14,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.weapons.push(this.scene.add.image(80, 418, "handgun-hud").setScale(2).setDepth(11));
         this.weapons.push(this.scene.add.image(80, 420, "shotgun-hud").setScale(2).setDepth(11));
-        this.weapons.push(this.scene.add.image(80, 420, "machinegun-hud").setScale(2).setDepth(11));
+        this.weapons.push(this.scene.add.image(80, 417, "machinegun-hud").setScale(2).setDepth(11));
         this.setWeapon(0);
 
         this.scorenumbers = [];
@@ -187,6 +187,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (this.ammunition <= 0) {
             this.weapon = 'gun';
+            this.setWeapon(0);
             this.setInfiniteAmmo();
         }
 
@@ -270,6 +271,7 @@ class Player extends Phaser.GameObjects.Sprite {
             this.ammunition = 0;
         }
         this.weapon = 'machinegun';
+        this.setWeapon(2);
         this.ammunition += 50;
         this.scene.sound.play('powerup03', {
             volume: 0.3
@@ -282,6 +284,7 @@ class Player extends Phaser.GameObjects.Sprite {
             this.ammunition = 0;
         }
         this.weapon = 'shotgun';
+        this.setWeapon(1);
         this.ammunition += 10;
         this.scene.sound.play('powerup03', {
             volume: 0.3
