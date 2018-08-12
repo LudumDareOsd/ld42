@@ -45,6 +45,7 @@ class SplashScene extends Phaser.Scene {
         this.load.image("overlay_game_over", "../../assets/image/Overllay_game_over.png");
         this.load.image("overlay_get_psyched", "../../assets/image/Overlay_Get_Psyched.png");
         this.load.image("overlay_wave", "../../assets/image/Overlay_Wave.png");
+        this.load.image("wave_overlay", "../../assets/image/wave_overlay.png");
 
         this.input.setDefaultCursor('url(../../assets/image/crosshair.png), pointer');
 

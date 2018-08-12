@@ -8,6 +8,10 @@ class WaveManager {
         this.wave = 1;
         this.wavetimer = 0;
         this.timeout = false;
+
+        this.wave_overlay = this.scene.add.image(320, 192, "wave_overlay").setScale(2).setDepth(15);
+        this.wave_overlay.visible = false;
+
         this.overlay_wave = this.scene.add.image(320, 60, "overlay_wave").setScale(2).setDepth(15);
         this.overlay_wave.visible = false;
 
@@ -25,6 +29,7 @@ class WaveManager {
     update(time, delta) {
         if (this.enemyManager.isWaveClear()) {
             this.overlay_wave.visible = true;
+            this.wave_overlay.visible = true;
             for (let number of this.wavenumber) {
                 number.visible = true;
             }
@@ -46,6 +51,7 @@ class WaveManager {
             }
         } else {
             this.overlay_wave.visible = false;
+            this.wave_overlay.visible = false;
             for (let number of this.wavenumber) {
                 number.visible = false;
             }
