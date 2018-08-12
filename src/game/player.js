@@ -5,9 +5,17 @@ class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y);
 
+
         this.hp = 100;
         this.setTexture('player');
         this.setPosition(x, y);
+
+        this.ammonumbers = [];
+        this.ammonumbers.push(this.scene.add.tileSprite(196, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.ammonumbers.push(this.scene.add.tileSprite(208, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.ammonumbers.push(this.scene.add.tileSprite(220, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.hpbar = this.hpbar = this.scene.add.image(146, 462, "healthbar").setScale(2).setDepth(11).setCrop(0, 0, 93, 8);
+        this.ammoinfinite = this.scene.add.image(208, 418, 'infinite').setScale(2).setDepth(11);
 
         this.left = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.left2 = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -34,7 +42,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.mouseY = 0;
 
         this.scene.input.on('pointerdown', (pointer) => {
-            if (this.firetimer <= 0) {
+            if (this.firetimer <= 0 && this.active == true) {
                 this.fiering = true;
             }
         });
@@ -58,6 +66,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.weapon = 'shotgun';
         this.ammunition = 0;
+        this.setInfiniteAmmo();
 
         this.fiering = false;
     }
@@ -110,7 +119,9 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (this.weapon == 'gun') {
             if (this.fiering) {
-                this.scene.sound.play('shoot03', {volume: 0.1});
+                this.scene.sound.play('shoot03', {
+                    volume: 0.1
+                });
                 this.fire(this.mouseX, this.mouseY);
                 this.fiering = false;
                 this.firetimer = 200;
@@ -118,7 +129,9 @@ class Player extends Phaser.GameObjects.Sprite {
         } else if (this.weapon == 'machinegun') {
             if (this.fiering) {
                 if (this.firetimer <= 0) {
-                    this.scene.sound.play('shoot01', {volume: 0.1});
+                    this.scene.sound.play('shoot01', {
+                        volume: 0.1
+                    });
                     this.fire(this.mouseX, this.mouseY);
                     this.firetimer = 100;
                 }
@@ -126,7 +139,9 @@ class Player extends Phaser.GameObjects.Sprite {
         } else if (this.weapon == 'shotgun') {
             if (this.fiering) {
                 if (this.fiering) {
-                    this.scene.sound.play('explosion01', {volume: 0.1});
+                    this.scene.sound.play('explosion01', {
+                        volume: 0.1
+                    });
                     this.fire(this.mouseX, this.mouseY, 0.1);
                     this.fire(this.mouseX, this.mouseY, 0.05);
                     this.fire(this.mouseX, this.mouseY, 0);
@@ -140,6 +155,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (this.ammunition <= 0) {
             this.weapon = 'gun';
+            this.setInfiniteAmmo();
         }
 
     }
@@ -151,8 +167,9 @@ class Player extends Phaser.GameObjects.Sprite {
             if (bullet) {
 
                 bullet.fire(this.x, this.y, x, y, offset);
-                if (this.gun != 'gun') {
+                if (this.weapon != 'gun') {
                     this.ammunition--;
+                    this.setAmmo();
                 }
             }
         }
@@ -160,12 +177,17 @@ class Player extends Phaser.GameObjects.Sprite {
 
     takeDamage(value) {
         this.hp -= value;
+        this.updateHpBar();
 
         if (this.hp <= 0) {
-            this.scene.sound.play('death01', {volume: 0.5});
+            this.scene.sound.play('death01', {
+                volume: 0.5
+            });
             this.destroy();
         } else {
-            this.scene.sound.play('hit01', {volume: 0.1});
+            this.scene.sound.play('hit01', {
+                volume: 0.1
+            });
         }
     }
 
@@ -175,20 +197,30 @@ class Player extends Phaser.GameObjects.Sprite {
         if (this.hp > 100) {
             this.hp = 100;
         }
+        this.updateHpBar();
+        this.scene.sound.play('beer01', {
+            volume: 0.3
+        });
+    }
 
-        this.scene.sound.play('beer01', {volume: 0.3});
+    updateHpBar() {
+        this.hpbar.setCrop(0, 0, (this.hp / 100) * 93, 8);
     }
 
     rage() {
         this.ragetimer = 10000;
         this.raging = true;
-        this.scene.sound.play('powerup01', {volume: 0.3});
+        this.scene.sound.play('powerup01', {
+            volume: 0.3
+        });
     }
 
     speed() {
         this.speedtimer = 10000;
         this.speedvalue = 200;
-        this.scene.sound.play('powerup02', {volume: 0.3});
+        this.scene.sound.play('powerup02', {
+            volume: 0.3
+        });
     }
 
     machinegun() {
@@ -197,7 +229,10 @@ class Player extends Phaser.GameObjects.Sprite {
         }
         this.weapon = 'machinegun';
         this.ammunition += 50;
-        this.scene.sound.play('powerup03', {volume: 0.3});
+        this.scene.sound.play('powerup03', {
+            volume: 0.3
+        });
+        this.setAmmo();
     }
 
     shotgun() {
@@ -206,7 +241,35 @@ class Player extends Phaser.GameObjects.Sprite {
         }
         this.weapon = 'shotgun';
         this.ammunition += 50;
-        this.scene.sound.play('powerup03', {volume: 0.3});
+        this.scene.sound.play('powerup03', {
+            volume: 0.3
+        });
+        this.setAmmo();
+    }
+
+    setNumber(sprites, value) {
+        value = value.padStart(sprites.length, '0');
+        for (let i = 0; i < sprites.length; i++) {
+            sprites[i].setFrame(value[i]);
+        }
+    }
+
+    setAmmo() {
+        this.ammoinfinite.visible = false;
+
+        for (let sprite of this.ammonumbers) {
+            sprite.visible = true;
+        }
+
+        this.setNumber(this.ammonumbers, this.ammunition.toString());
+    }
+
+    setInfiniteAmmo() {
+        this.ammoinfinite.visible = true;
+
+        for (let sprite of this.ammonumbers) {
+            sprite.visible = false
+        }
     }
 }
 

@@ -34,6 +34,13 @@ class SplashScene extends Phaser.Scene {
         this.load.image("speed", "../../assets/image/speed.png");
         this.load.image("machinegun", "../../assets/image/Machinegun.png");
         this.load.image("shotgun", "../../assets/image/Shotgun.png");
+        this.load.image("healthbar", "../../assets/image/healthbar.png");
+        this.load.image("infinite", "../../assets/image/infinite.png");
+
+        this.load.spritesheet("numbers", "../../assets/image/numbers.png", {
+            frameWidth: 6,
+            frameHeight: 8
+        });
 
         this.load.spritesheet("lava",
             "../../assets/image/lava_anim.png", {

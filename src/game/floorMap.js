@@ -56,7 +56,6 @@ class FloorMap {
     }
 
     walkinlava() {
-        console.log("ded");
         this.scene.player.takeDamage(100);
     }
 
