@@ -1,8 +1,8 @@
 {
-    "name": "Phaser3ES6Webpack",
+    "name": "raiders_of_the_lost_beer",
     "version": "1.0.0",
     "description": "",
-    "author": "niklas berg <me@niklasberg.se>",
+    "author": "Emil Sunesson & Glenn Edberg",
     "main": "index.js",
     "scripts": {
         "dev": "webpack --mode=development",

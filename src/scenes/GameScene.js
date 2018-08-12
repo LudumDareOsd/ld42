@@ -51,7 +51,7 @@ class GameScene extends Phaser.Scene {
         this.map = new FloorMap(this);
         this.enemyManager = new EnemyManager(this.player, this, 1);
         this.powerupManager = new PowerupManager(this, this.map);
-        this.waveManager = new WaveManager(this.enemyManager, this.powerupManager, this.map);
+        this.waveManager = new WaveManager(this, this.enemyManager, this.powerupManager, this.map);
 
         this.anims.create({
             key: 'idle',
@@ -121,7 +121,7 @@ class GameScene extends Phaser.Scene {
             this.enemyManager.update(time, delta);
             this.powerupManager.update(time, delta);
             this.waveManager.update(time, delta);
-
+            
             if (this.player.body) {
                 if (!this.itersects(this.player, this.ground)) {
                     this.player.takeDamage(100);
