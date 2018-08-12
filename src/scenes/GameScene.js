@@ -15,10 +15,13 @@ class GameScene extends Phaser.Scene {
 
     create() {
         this.hud = this.add.image(320, 432, "hud").setScale(2).setDepth(10);
-        this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava').setScale(2).setDepth(0);
+        this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava', 0).setScale(2).setDepth(0);
         this.map = new FloorMap(this);
         this.player = this.add.existing(new Player(this, 320, 240)).setScale(2).setDepth(5);
         this.droptimer = 3000;
+        this.lavatimer = 250;
+        this.lavaFrame = 0;
+        this.lavaDir = true;
 
         this.ground = this.add.zone(48, 48).setSize(544, 288);
         this.physics.world.enable(this.ground);
@@ -60,6 +63,17 @@ class GameScene extends Phaser.Scene {
             frameRate: 10,
             repeat: 0
         });
+
+        this.anims.create({
+            key: 'lava-idle',
+            frames: this.anims.generateFrameNumbers('lava', {
+                start: 0,
+                end: 2
+            }),
+            frameRate: 5,
+            repeat: -1,
+            yoyo: true
+        });
     }
 
     update(time, delta) {
@@ -76,10 +90,33 @@ class GameScene extends Phaser.Scene {
         this.enemyManager.generateEnemy();
 
         this.droptimer -= delta;
+        this.lavatimer -= delta;
 
         if (this.droptimer <= 0) {
             this.map.dropTile();
             this.droptimer = 3000;
+        }
+
+        if (this.lavatimer <= 0) {
+            if (this.lavaDir) {
+                if (this.lavaFrame < 2) {
+                    this.lavaFrame++;
+                } else {
+                    this.lavaDir = false;
+                    this.lavaFrame--;
+                }
+            } else {
+                if (this.lavaFrame > 0) {
+                    this.lavaFrame--
+                } else {
+                    this.lavaDir = true;
+                    this.lavaFrame++;
+                }
+            }
+
+            this.lava.destroy();
+            this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava', this.lavaFrame).setScale(2).setDepth(0);
+            this.lavatimer = 250;
         }
     }
 
