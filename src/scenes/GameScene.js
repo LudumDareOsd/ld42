@@ -16,13 +16,28 @@ class GameScene extends Phaser.Scene {
 
     create() {
         this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.titlescreen = this.add.image(320, 192, "titlescreen").setScale(2).setDepth(15);
+        this.overlay = this.add.image(320, 100, "overlay").setScale(2).setDepth(15);
+        this.overlay_game_over = this.add.image(320, 90, "overlay_game_over").setScale(2).setDepth(15);
+        this.overlay_get_psyched = this.add.image(320, 90, "overlay_get_psyched").setScale(2).setDepth(15);
+        
+        this.overlay.visible = false;
+        this.overlay_game_over.visible = false;
+
+        this.press_start = this.add.image(320, 192, "press_start").setScale(2).setDepth(16);
+        this.presstarttimer = 500;
+
         this.hud = this.add.image(320, 432, "hud").setScale(2).setDepth(10);
         this.lava = this.add.tileSprite(320, 240, 320, 240, 'lava', 0).setScale(2).setDepth(0);
         this.player = this.add.existing(new Player(this, 320, 240)).setScale(2).setDepth(5);
+
         this.droptimer = 3000;
         this.lavatimer = 250;
         this.lavaFrame = 0;
         this.lavaDir = true;
+
+        this.started = false;
+        this.starttimer = 1000;
 
         this.ground = this.add.zone(48, 48).setSize(544, 288);
         this.physics.world.enable(this.ground);
@@ -87,28 +102,53 @@ class GameScene extends Phaser.Scene {
             repeat: -1,
             yoyo: true
         });
+
+        if (window.restart == true) {
+            this.started = true;
+            this.titlescreen.destroy();
+            this.press_start.destroy();
+        }
     }
 
-    update(time, delta) {
-        this.player.update(time, delta);
-        this.enemyManager.update(time, delta);
-        this.powerupManager.update(time, delta);
-        this.waveManager.update(time, delta);
 
-        if (this.player.body) {
-            if (!this.itersects(this.player, this.ground)) {
-                this.player.takeDamage(100);
+
+    update(time, delta) {
+        if (this.started) {
+            this.player.update(time, delta);
+            this.enemyManager.update(time, delta);
+            this.powerupManager.update(time, delta);
+            this.waveManager.update(time, delta);
+
+            if (this.player.body) {
+                if (!this.itersects(this.player, this.ground)) {
+                    this.player.takeDamage(100);
+                }
+            }
+
+            this.droptimer -= delta;
+
+            if (this.droptimer <= 0 && this.waveManager.timeout == false) {
+                this.map.dropTile();
+                this.droptimer = 3000;
+            }
+        } else {
+          
+            if (this.space.isDown && this.player.active) {
+                this.started = true;
+                this.titlescreen.destroy();
+                this.press_start.destroy();
+            }
+
+            this.presstarttimer -= delta;
+
+            if (this.presstarttimer <= 0) {
+                this.presstarttimer = 500;
+                this.press_start.visible = !this.press_start.visible;
             }
         }
 
-
-        this.droptimer -= delta;
         this.lavatimer -= delta;
 
-        if (this.droptimer <= 0 && this.waveManager.timeout == false) {
-            this.map.dropTile();
-            this.droptimer = 3000;
-        }
 
         if (this.lavatimer <= 0) {
             if (this.lavaDir) {
@@ -134,6 +174,11 @@ class GameScene extends Phaser.Scene {
 
         if (this.space.isDown && !this.player.active) {
             this.scene.restart();
+        }
+
+        if(this.player.dead) {
+          this.overlay.visible = true;
+          this.overlay_game_over.visible = true;
         }
     }
 

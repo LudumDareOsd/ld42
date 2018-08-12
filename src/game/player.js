@@ -130,7 +130,6 @@ class Player extends Phaser.GameObjects.Sprite {
             this.speedvalue = 100;
         }
 
-
         if (this.firetimer > 0) {
             this.firetimer -= delta;
         }
@@ -207,6 +206,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.play('player_die');
                 this.on('animationcomplete', () => {
                     this.destroy();
+                    window.restart = true;
                 });
             } else {
                 this.scene.sound.play('hit01', {

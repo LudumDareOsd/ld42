@@ -37,6 +37,12 @@ class SplashScene extends Phaser.Scene {
         this.load.image("healthbar", "../../assets/image/healthbar.png");
         this.load.image("infinite", "../../assets/image/infinite.png");
         this.load.image("redbar", "../../assets/image/sacrificebar.png");
+        this.load.image("titlescreen", "../../assets/image/titlescreen.png");
+        this.load.image("press_start", "../../assets/image/press_start.png");
+        this.load.image("overlay", "../../assets/image/Overlay.png");
+        this.load.image("overlay_game_over", "../../assets/image/Overllay_game_over.png");
+        this.load.image("overlay_get_psyched", "../../assets/image/Overlay_Get_Psyched.png");
+        
 
         this.load.spritesheet("numbers", "../../assets/image/numbers.png", {
             frameWidth: 6,
@@ -67,13 +73,11 @@ class SplashScene extends Phaser.Scene {
 
     create() {
         this.add.image(320, 240, "logo").setScale(2);
-        this.space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.scene.switch('GameScene');
     }
 
     update() {
-        if (this.space.isDown) {
-            this.scene.switch('GameScene');
-        }
+        
     }
 }
 
