@@ -16,6 +16,9 @@ class SplashScene extends Phaser.Scene {
         this.load.audio("death01", "../../assets/audio/Death01.wav");
         this.load.audio("death02", "../../assets/audio/Death02.wav");
         this.load.audio("explosion01", "../../assets/audio/Explosion01.wav");
+        this.load.audio("powerup01", "../../assets/audio/Powerup01.wav");
+        this.load.audio("powerup02", "../../assets/audio/Powerup02.wav");
+        this.load.audio("powerup03", "../../assets/audio/Powerup03.wav");
 
         this.load.image("logo", "../../assets/Original/splash.png");
         this.load.image("player", "../../assets/image/player.png");

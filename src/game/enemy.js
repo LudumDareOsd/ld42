@@ -83,6 +83,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
             bullet.speed = Phaser.Math.GetSpeed(400, 1);
             if (bullet) {
                 bullet.fire(this.x, this.y, x, y);
+                this.scene.sound.play('shoot01', {volume: 0.1});
             }
         }
     }
@@ -94,6 +95,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
             if (this.hp <= 0) {
                 this.play('die');
                 this.currentAnimation = 'die';
+                this.scene.sound.play('death02', {volume: 0.3});
+            } else {
+                this.scene.sound.play('hit02', {volume: 0.1});
             }
         }
     }
