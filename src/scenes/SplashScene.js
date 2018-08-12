@@ -9,7 +9,6 @@ class SplashScene extends Phaser.Scene {
     preload() {
         this.load.image("logo", "../../assets/Original/splash.png");
         this.load.image("player", "../../assets/image/player.png");
-        this.load.image("lava", "../../assets/image/lava_tile.png");
         this.load.image("floor", "../../assets/image/floor_tile.png");
         this.load.image("player_bullet", "../../assets/image/bullet.png");
         this.load.image("enemy_bullet", "../../assets/image/enemy_bullet.png");
@@ -22,6 +21,13 @@ class SplashScene extends Phaser.Scene {
         this.load.image("speed", "../../assets/image/speed.png");
         this.load.image("machinegun", "../../assets/image/Machinegun.png");
         this.load.image("shotgun", "../../assets/image/Shotgun.png");
+
+        this.load.spritesheet("lava",
+            "../../assets/image/lava_anim.png", {
+                frameWidth: 32,
+                frameHeight: 32
+            }
+        );
 
         this.load.spritesheet("blob",
             "../../assets/image/blob.png", {
