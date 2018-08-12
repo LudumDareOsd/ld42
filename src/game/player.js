@@ -26,8 +26,13 @@ class Player extends Phaser.GameObjects.Sprite {
         this.ammonumbers.push(this.scene.add.tileSprite(208, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
         this.ammonumbers.push(this.scene.add.tileSprite(220, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
 
+        this.sacreficenumbers = [];
+        this.sacreficenumbers.push(this.scene.add.tileSprite(576, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.sacreficenumbers.push(this.scene.add.tileSprite(588, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+        this.sacreficenumbers.push(this.scene.add.tileSprite(600, 418, 6, 8, 'numbers', 0).setScale(2).setDepth(11));
+
+
         this.greenbar = this.scene.add.image(146, 462, "healthbar").setScale(2).setDepth(12);
-        this.redbar = this.scene.add.image(528, 408, "redbar").setScale(2).setDepth(12);
 
         this.updateHpBar();
 
@@ -234,7 +239,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
     updateSacreficeBar() {
         if (this.active) {
-            // this.redbar.setCrop(0, 0, (this.scene.enemyManager.enemysleft / this.scene.enemyManager.totalEnemies) * 92, 8);
+          this.setNumber(this.sacreficenumbers, this.scene.enemyManager.enemysleft.toString());
         }
     }
 
