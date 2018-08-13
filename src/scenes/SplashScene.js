@@ -20,7 +20,7 @@ class SplashScene extends Phaser.Scene {
         this.load.audio("powerup02", "../../assets/audio/Powerup02.wav");
         this.load.audio("powerup03", "../../assets/audio/Powerup03.wav");
 
-        this.load.image("logo", "../../assets/Original/splash.png");
+        this.load.image("splash", "../../assets/image/Splash.png");
         this.load.image("player", "../../assets/image/player.png");
         this.load.image("floor", "../../assets/image/floor_tile.png");
         this.load.image("player_bullet", "../../assets/image/bullet.png");
@@ -77,12 +77,16 @@ class SplashScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(320, 240, "logo").setScale(2);
-        this.scene.switch('GameScene');
+        this.add.image(320, 240, "splash").setScale(2);
+
+        this.timer = 1500;
     }
 
-    update() {
-
+    update(time, delta) {
+      this.timer -= delta;
+      if(this.timer < 0) {
+        this.scene.switch('GameScene');
+      }
     }
 }
 

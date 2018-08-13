@@ -10,6 +10,7 @@ class PowerupManager {
         this.scene = scene;
         this.map = map;
         this.poweruptimer = 5000;
+        this.powerupindex = 0;
 
         this.powerups = this.scene.physics.add.group();
         this.scene.physics.add.overlap(this.powerups, this.scene.player, this.hitpowerup, null, this);
@@ -19,15 +20,20 @@ class PowerupManager {
     update(time, delta) {
         this.poweruptimer -= delta;
         if (this.poweruptimer <= 0 && !this.scene.waveManager.timeout) {
-            let rand = Math.floor(Math.random() * 3);
 
-            if (rand == 0) {
-                this.spawnPowerup();
-            } else if (rand == 1) {
-                this.spawnLife();
-            } else {
-                this.spawnWeapon();
+            if (this.powerupindex == 3) {
+                this.powerupindex = 0;
             }
+
+            if (this.powerupindex == 0) {
+                this.spawnWeapon();
+            } else if (this.powerupindex == 1) {
+                this.spawnPowerup();
+            } else {
+                this.spawnLife();
+            }
+
+            this.powerupindex++;
 
             this.poweruptimer = 5000;
         }

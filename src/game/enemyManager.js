@@ -11,9 +11,9 @@ class EnemyManager {
     }
 
     startWave(wave) {
-        this.nrOfEnemies = 1 + Math.floor(wave * 0.5);
+        this.nrOfEnemies = 1 + Math.floor(wave * 0.20);
         this.enemiesCreated = 0;
-        this.totalEnemies = 3 + Math.floor(1.5 * wave); 
+        this.totalEnemies = 3 + Math.floor(1 * wave); 
         this.enemysleft = this.totalEnemies;
         this.player.updateSacreficeBar();
     }
